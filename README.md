@@ -42,7 +42,7 @@ npm install
 
 ### 3. Start JSON Server
 ```bash
-npx json-server --watch db.json --port 3000
+npx json-server --watch db.json --port 5000
 ```
 
 ### 4. Start the React App
