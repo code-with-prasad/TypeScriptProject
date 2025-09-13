@@ -1,27 +1,48 @@
-// src/components/StudentList.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { decrypt } from "../utils/crypto";
 
-const StudentList = ({ refresh }: { refresh: boolean }) => {
-  const [students, setStudents] = useState<any[]>([]);
+interface Student {
+  id?: number;
+  fullName: string;
+  email: string;
+  phone: string;
+  dob: string;
+  gender: string;
+  address: string;
+  course: string;
+  password?: string;
+}
+
+interface Props {
+  refresh: boolean;
+  onEdit: (student: Student) => void;
+}
+
+const StudentList: React.FC<Props> = ({ refresh, onEdit }) => {
+  const [students, setStudents] = useState<Student[]>([]);
 
   const fetchStudents = async () => {
-    const res = await axios.get("http://localhost:3000/students");
-    const decrypted = res.data.map((s: any) => decrypt(s.data));
-    setStudents(decrypted.filter(Boolean));
+    try {
+      const res = await axios.get("http://localhost:3000/students");
+      const decrypted = res.data.map((s: any) => {
+        const student = decrypt(s.data);
+        return student ? { ...student, id: s.id } : null;
+      });
+      setStudents(decrypted.filter(Boolean));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
     fetchStudents();
   }, [refresh]);
 
-  const handleDelete = async (index: number) => {
+  const handleDelete = async (id: number) => {
     try {
-      const allStudents = await axios.get("http://localhost:3000/students");
-      const idToDelete = allStudents.data[index].id;
-      await axios.delete(`http://localhost:3000/students/${idToDelete}`);
+      await axios.delete(`http://localhost:3000/students/${id}`);
       Swal.fire("Deleted", "Student removed", "success");
       fetchStudents();
     } catch (err) {
@@ -47,8 +68,8 @@ const StudentList = ({ refresh }: { refresh: boolean }) => {
           </tr>
         </thead>
         <tbody>
-          {students.map((s: any, idx) => (
-            <tr key={idx}>
+          {students.map((s) => (
+            <tr key={s.id}>
               <td>{s.fullName}</td>
               <td>{s.email}</td>
               <td>{s.phone}</td>
@@ -57,7 +78,18 @@ const StudentList = ({ refresh }: { refresh: boolean }) => {
               <td>{s.address}</td>
               <td>{s.course}</td>
               <td>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(idx)}>Delete</button>
+                <button
+                  className="btn btn-primary btn-sm me-2"
+                  onClick={() => onEdit(s)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleDelete(s.id!)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

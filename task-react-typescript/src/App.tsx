@@ -3,42 +3,77 @@ import LoginForm from "./components/LoginForm";
 import StudentForm from "./components/StudentForm";
 import StudentList from "./components/StudentList";
 
-const App = () => {
+const App: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [showRegister, setShowRegister] = useState(false); // toggle
   const [refresh, setRefresh] = useState(false);
+  const [editStudent, setEditStudent] = useState<any>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [registerMode, setRegisterMode] = useState(false);
 
-  const handleStudentAdded = () => setRefresh(!refresh);
+  // Called after a student is added or updated
+  const handleStudentAdded = () => {
+    setRefresh(!refresh);
+    setShowForm(false);
+    setRegisterMode(false);
+  };
+
+  const handleEdit = (student: any) => {
+    setEditStudent(student);
+    setShowForm(true);
+    setRegisterMode(false);
+  };
+
+  const handleAddNew = () => {
+    setEditStudent(null);
+    setShowForm(true);
+    setRegisterMode(false);
+  };
+
+  const handleRegister = () => {
+    setEditStudent(null);
+    setShowForm(true);
+    setRegisterMode(true); // show StudentForm in register mode
+  };
 
   return (
-    <div>
+    <div className="container mt-3">
       {!loggedIn ? (
         <>
-          {showRegister ? (
+          {showForm && registerMode ? (
             <StudentForm
-              onStudentAdded={() => {
-                setRefresh(!refresh);
-                setShowRegister(false); // after register, go to login
-              }}
+              onStudentAdded={handleStudentAdded}
+              studentToEdit={null}
+              clearEdit={() => setShowForm(false)}
+              registerMode={true}
             />
           ) : (
-            <LoginForm onLogin={() => setLoggedIn(true)} />
+            <>
+              <LoginForm onLogin={() => setLoggedIn(true)} />
+              <button className="btn btn-link mt-3" onClick={handleRegister}>
+                Register
+              </button>
+            </>
           )}
-
-          {/* Toggle Button */}
-          <div style={{ textAlign: "center", marginTop: "10px" }}>
-            <button
-              className="btn btn-link"
-              onClick={() => setShowRegister(!showRegister)}
-            >
-              {showRegister ? "Back to Login" : "Register New User"}
-            </button>
-          </div>
         </>
       ) : (
         <>
-          <StudentForm onStudentAdded={handleStudentAdded} />
-          <StudentList refresh={refresh} />
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h2>Student Management</h2>
+            <button className="btn btn-primary" onClick={handleAddNew}>
+              Add New Student
+            </button>
+          </div>
+
+          {showForm && (
+            <StudentForm
+              onStudentAdded={handleStudentAdded}
+              studentToEdit={editStudent}
+              clearEdit={() => setEditStudent(null)}
+              registerMode={false}
+            />
+          )}
+
+          <StudentList refresh={refresh} onEdit={handleEdit} />
         </>
       )}
     </div>

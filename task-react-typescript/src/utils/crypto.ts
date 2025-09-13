@@ -1,4 +1,3 @@
-// src/utils/crypto.ts
 import CryptoJS from "crypto-js";
 
 const key = import.meta.env.VITE_CRYPTO_KEY || "default_secret_key";
