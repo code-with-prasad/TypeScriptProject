@@ -25,7 +25,7 @@ const StudentList: React.FC<Props> = ({ refresh, onEdit }) => {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/students");
+      const res = await axios.get("http://localhost:5000/students");
       const decrypted = res.data.map((s: any) => {
         const student = decrypt(s.data);
         return student ? { ...student, id: s.id } : null;
@@ -42,7 +42,7 @@ const StudentList: React.FC<Props> = ({ refresh, onEdit }) => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:3000/students/${id}`);
+      await axios.delete(`http://localhost:5000/students/${id}`);
       Swal.fire("Deleted", "Student removed", "success");
       fetchStudents();
     } catch (err) {

@@ -73,13 +73,13 @@ const StudentForm: React.FC<Props> = ({
     try {
       if (studentToEdit && studentToEdit.id) {
         
-        await axios.put(`http://localhost:3000/students/${studentToEdit.id}`, {
+        await axios.put(`http://localhost:5000/students/${studentToEdit.id}`, {
           data: encryptedData,
         });
         Swal.fire("Updated", "Student updated successfully", "success");
       } else {
         
-        await axios.post("http://localhost:3000/students", { data: encryptedData });
+        await axios.post("http://localhost:5000/students", { data: encryptedData });
         Swal.fire("Registered", "Student registered successfully", "success");
       }
 

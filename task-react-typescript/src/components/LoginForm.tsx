@@ -12,7 +12,7 @@ const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.get("http://localhost:3000/students");
+      const res = await axios.get("http://localhost:5000/students");
       const students = res.data;
 
       const matched = students.find((s: any) => {
