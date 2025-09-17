@@ -81,7 +81,8 @@ const StudentForm: React.FC<Props> = ({
 
         await axios.put(`http://localhost:5000/students/${studentToEdit.id}`, {
           data: encryptedData,
-        });
+        }); 
+        
         Swal.fire("Updated", "Student updated successfully", "success");
       } else {
 
