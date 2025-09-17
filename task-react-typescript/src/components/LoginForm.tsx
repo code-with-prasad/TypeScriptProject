@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -12,15 +11,21 @@ const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.get("http://localhost:5000/students");
+      // Fetch only the student with the given email
+      const res = await axios.get(`http://localhost:5000/students?email=${encodeURIComponent(email)}`);
       const students = res.data;
 
-      const matched = students.find((s: any) => {
-        const decrypted = decrypt<{ email: string; password: string }>(s.data);
-        return decrypted?.email === email && decrypted?.password === password;
-      });
+      if (students.length === 0) {
+        Swal.fire("Error", "Invalid Credentials", "error");
+        return;
+      }
 
-      if (matched) {
+      const student = students[0].data;
+
+      const decryptedEmail = decrypt(student.email);
+      const decryptedPassword = decrypt(student.password);
+
+      if (decryptedEmail === email && decryptedPassword === password) {
         Swal.fire("Success", "Login Successful!", "success");
         onLogin();
       } else {
@@ -28,6 +33,7 @@ const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
       }
     } catch (err) {
       console.error(err);
+      Swal.fire("Error", "Something went wrong!", "error");
     }
   };
 

@@ -1,18 +1,12 @@
 import CryptoJS from "crypto-js";
 
-const key = import.meta.env.VITE_CRYPTO_KEY || "default_secret_key";
+const SECRET = import.meta.env.VITE_AES_SECRET || "test_secret";
 
-export const encrypt = (data: object): string => {
-  return CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
-};
+export function encrypt(text: string): string {
+  return CryptoJS.AES.encrypt(text, SECRET).toString();
+}
 
-export const decrypt = <T>(cipherText: string): T | null => {
-  try {
-    const bytes = CryptoJS.AES.decrypt(cipherText, key);
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-    return JSON.parse(decrypted) as T;
-  } catch (err) {
-    console.error("Decryption failed:", err);
-    return null;
-  }
-};
+export function decrypt(cipher: string): string {
+  const bytes = CryptoJS.AES.decrypt(cipher, SECRET);
+  return bytes.toString(CryptoJS.enc.Utf8);
+}

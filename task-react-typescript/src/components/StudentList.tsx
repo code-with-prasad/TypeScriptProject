@@ -26,11 +26,20 @@ const StudentList: React.FC<Props> = ({ refresh, onEdit }) => {
   const fetchStudents = async () => {
     try {
       const res = await axios.get("http://localhost:5000/students");
-      const decrypted = res.data.map((s: any) => {
-        const student = decrypt(s.data);
-        return student ? { ...student, id: s.id } : null;
-      });
-      setStudents(decrypted.filter(Boolean));
+
+      const decrypted = res.data.map((s: any) => ({
+        id: s.id,
+        fullName: decrypt(s.data.fullName),
+        email: decrypt(s.data.email),
+        phone: decrypt(s.data.phone),
+        dob: decrypt(s.data.dob),
+        gender: decrypt(s.data.gender),
+        address: decrypt(s.data.address),
+        course: decrypt(s.data.course),
+        password: s.data.password ? decrypt(s.data.password) : "",
+      }));
+
+      setStudents(decrypted);
     } catch (err) {
       console.error(err);
     }

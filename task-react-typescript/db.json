@@ -1,8 +1,31 @@
 {
   "students": [
     {
-      "data": "U2FsdGVkX1+RWajys2fmkxyR8WnUexLa2gxDJZrqVguBKG1McjCXeQb/kudKa87HSqnKY5HhdOXLPe2J/RY0Pd8x/w5D7LPSHGPdhU99LJgneoOiAcC244GMWuhECsHAyecfEjn7RoIGO+rVRCFCYWTTGwg4R0yV8ODw0FAzA0nps2B/Kno1USOdl3YWrsTIBs18k5KiKkh4knev7CpJAAYediVQHVD+5VyYBevVieYvYYERDOsEa8M+6kn5RO2jFLFjWAmwv4kwo6pjiZ5W4g==",
-      "id": "d6d6"
+      "data": {
+        "id": "U2FsdGVkX1/XVuhZdA1iC3WlEl65eSH68/Hn97xi/Os=",
+        "fullName": "U2FsdGVkX18z96VlHkGprUQ/2O6xrXRodNKHuQNyTHc=",
+        "email": "U2FsdGVkX1/LukDoVo7XUKRjRp/o1EY/7avnYRMOPjA=",
+        "phone": "U2FsdGVkX1+u+d6pcv/7j7Qy8Gw0Z5rjoOE2hzG079o=",
+        "dob": "U2FsdGVkX18VN1bTpNwc46kxxzLh/mwQhzEVdVY+Y0A=",
+        "gender": "U2FsdGVkX19W8H/1VbprKlVD8g+VD/o9hrX0uZE3LoA=",
+        "address": "U2FsdGVkX19zR+MpyJtemwaej21pDH3aDUzDM3Abux4=",
+        "course": "U2FsdGVkX19KGbA+9ZeI8DudctGwvrG+iDgZC9cssSI=",
+        "password": "U2FsdGVkX1/vldznHJyk71erATfvED0rDgxF0eInWKs="
+      },
+      "id": "815a"
+    },
+    {
+      "id": "8a82",
+      "data": {
+        "fullName": "U2FsdGVkX1/+uUpcti8ylEUXJh1ulOjcxfhL2cikDcQ=",
+        "email": "U2FsdGVkX1/ugvcoRCfQCwGZk9RnQJNaSPot8l7BIf8=",
+        "phone": "U2FsdGVkX1+Y+5NpnOM4nIBdhttO+706+UWxVbuOLzY=",
+        "dob": "U2FsdGVkX18pf1DNnYOgANPNR07o4cGdzmXpAsQU5po=",
+        "gender": "U2FsdGVkX1845XQon+wnXQbtGuaHhsEOd4K2lkGstfM=",
+        "address": "U2FsdGVkX18y/byQJ9znmoOnl8b4/S4PQ8w6Uwx1ZqY=",
+        "course": "U2FsdGVkX1+9K6xfYYGPsPYTpe6A9cyk3OilM3JB5r8=",
+        "password": "U2FsdGVkX181RQd14X5Y3/KR9NQODr+Ntim3+Ng/QYE="
+      }
     }
   ]
 }

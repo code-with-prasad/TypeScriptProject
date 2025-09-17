@@ -43,7 +43,7 @@ const StudentForm: React.FC<Props> = ({
     if (studentToEdit) {
       setFormData({
         ...studentToEdit,
-        password: "", // reset password for security
+        password: "", 
       });
     }
   }, [studentToEdit]);
@@ -68,17 +68,23 @@ const StudentForm: React.FC<Props> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const encryptedData = encrypt(formData);
+    const encryptedData: Record<string, string> = {};
+    console.log("formData",formData);
+    
+    Object.entries(formData).forEach(([key, value]) => {
+      encryptedData[key] = encrypt(value || "");
+    });
+    console.log('studentToEdit', studentToEdit);
 
     try {
       if (studentToEdit && studentToEdit.id) {
-        
+
         await axios.put(`http://localhost:5000/students/${studentToEdit.id}`, {
           data: encryptedData,
         });
         Swal.fire("Updated", "Student updated successfully", "success");
       } else {
-        
+
         await axios.post("http://localhost:5000/students", { data: encryptedData });
         Swal.fire("Registered", "Student registered successfully", "success");
       }
@@ -183,7 +189,7 @@ const StudentForm: React.FC<Props> = ({
             onChange={handleChange}
             placeholder="Password"
             className="form-control"
-            required 
+            required
           />
         </div>
         <div className="col-12 d-flex gap-2">
