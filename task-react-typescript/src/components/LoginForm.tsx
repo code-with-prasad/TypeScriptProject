@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { decrypt } from "../utils/crypto";
+import { decrypt, deterministicDecrypt, deterministicEncrypt, encrypt } from "../utils/crypto";
 
 const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
   const [email, setEmail] = useState("");
@@ -12,18 +12,37 @@ const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
 
     try {
       // Fetch only the student with the given email
-      const res = await axios.get(`http://localhost:5000/students?email=${encodeURIComponent(email)}`);
+     const encryptedEmail = deterministicEncrypt(email);
+     console.log('prev', 'U2FsdGVkX1+APGzYKVIOJk4Skg6FEh1B/+nAXdMIBIY=');
+     console.log('encryptedEmail',encryptedEmail);
+     
+     
+  const encryptedPassword = encrypt(password);
+
+ const res = await axios.get(
+  `http://localhost:5000/students?email=${encodeURIComponent(encryptedEmail)}`
+);
+  console.log('res',res);
+  
       const students = res.data;
+      console.log(students);
+      
 
       if (students.length === 0) {
         Swal.fire("Error", "Invalid Credentials", "error");
         return;
       }
 
-      const student = students[0].data;
+      const student = students[0];
+      console.log('student',student);
+      
 
-      const decryptedEmail = decrypt(student.email);
+      const decryptedEmail = deterministicDecrypt(student.email);
       const decryptedPassword = decrypt(student.password);
+      console.log('decryptedEmail',decryptedEmail);
+      console.log('decryptedPassword',decryptedPassword);
+      
+      
 
       if (decryptedEmail === email && decryptedPassword === password) {
         Swal.fire("Success", "Login Successful!", "success");

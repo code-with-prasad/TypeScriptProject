@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { encrypt } from "../utils/crypto";
+import { deterministicEncrypt, encrypt } from "../utils/crypto";
 
 interface Student {
   id?: number;
@@ -71,22 +71,28 @@ const StudentForm: React.FC<Props> = ({
     const encryptedData: Record<string, string> = {};
     console.log("formData",formData);
     
-    Object.entries(formData).forEach(([key, value]) => {
-      encryptedData[key] = encrypt(value || "");
-    });
+   Object.entries(formData).forEach(([key, value]) => {
+  if (key === "email") {
+    encryptedData[key] = deterministicEncrypt(value || "");
+  } else {
+    encryptedData[key] = encrypt(value || "");
+  }
+});
     console.log('studentToEdit', studentToEdit);
 
     try {
+      console.log('studentToEdit',studentToEdit);
+      
       if (studentToEdit && studentToEdit.id) {
 
         await axios.put(`http://localhost:5000/students/${studentToEdit.id}`, {
-          data: encryptedData,
+          ...encryptedData,
         }); 
         
         Swal.fire("Updated", "Student updated successfully", "success");
       } else {
 
-        await axios.post("http://localhost:5000/students", { data: encryptedData });
+        await axios.post("http://localhost:5000/students", { ...encryptedData });
         Swal.fire("Registered", "Student registered successfully", "success");
       }
 
